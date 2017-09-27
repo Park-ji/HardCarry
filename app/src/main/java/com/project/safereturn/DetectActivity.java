@@ -8,6 +8,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.util.Log;
 
 import java.io.IOException;
@@ -31,6 +32,13 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
     private Timer timerDecibel;
     private TimerTask timerTaskDecibel;
 
+    private double curLatitude = 0;
+    private double curLongitude = 0;
+
+    private SmsManager smsManager;
+
+    private boolean isSendSMS = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,15 +49,37 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
 
         sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
 
+        curLatitude = MainActivity.latitude;
+        curLongitude = MainActivity.longitude;
+
+
+        final double rangeDistance = Math.sqrt(0.001794 * 0.001794 + 0.002549 * 0.002549);
+
+
         timerDecibel = new Timer();
         timerTaskDecibel = new TimerTask() {
             @Override
             public void run() {
                 //handler.post(runnable);
                 int decibel = getDecibel();
-                if(60 <  decibel) {
-                    Log.e("alarm", String.valueOf(decibel));
+                if(90 <  decibel) {
+                    if(!isSendSMS) {
+                        sendSMS("hi");
+                        isSendSMS = true;
+                    }
                 }
+
+                double dx = curLatitude - MainActivity.latitude;
+                double dy = curLongitude - MainActivity.longitude;
+                double pointToCurPositionDistance = Math.sqrt(dx * dx + dy * dy);
+
+                if(rangeDistance < pointToCurPositionDistance) {
+                    if(!isSendSMS) {
+                        sendSMS("hi");
+                        isSendSMS = true;
+                    }
+                }
+
             }
         };
 
@@ -67,6 +97,8 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
         }
 
         timerDecibel.schedule(timerTaskDecibel, 0, 500);
+
+        smsManager = SmsManager.getDefault();
     }
 
     private int getAmplitude() {
@@ -82,6 +114,10 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
         else {
             return -1;
         }
+    }
+
+    private void sendSMS(String text) {
+        smsManager.sendTextMessage("01098898432", null, text, null, null);
     }
 
     @Override
@@ -105,7 +141,11 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
                 }
 
                 shakeTime = currentTime;
-                Log.d("detect", "detack");
+
+                if(!isSendSMS) {
+                    sendSMS("hi");
+                    isSendSMS = true;
+                }
             }
         }
     }

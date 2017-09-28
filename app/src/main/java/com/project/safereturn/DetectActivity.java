@@ -1,5 +1,6 @@
 package com.project.safereturn;
 
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -10,6 +11,8 @@ import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -39,6 +42,8 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
 
     private boolean isSendSMS = false;
 
+    private ImageView imageViewCurLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +56,6 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
 
         curLatitude = MainActivity.latitude;
         curLongitude = MainActivity.longitude;
-
-
         final double rangeDistance = Math.sqrt(0.001794 * 0.001794 + 0.002549 * 0.002549);
 
 
@@ -63,8 +66,8 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
                 //handler.post(runnable);
                 int decibel = getDecibel();
                 if(90 <  decibel) {
-                    if(!isSendSMS) {
-                        sendSMS("hi");
+                    if(!isSendSMS && MyApplication.preferences.getBoolean("shouting", false)) {
+                        sendSMS();
                         isSendSMS = true;
                     }
                 }
@@ -74,12 +77,11 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
                 double pointToCurPositionDistance = Math.sqrt(dx * dx + dy * dy);
 
                 if(rangeDistance < pointToCurPositionDistance) {
-                    if(!isSendSMS) {
-                        sendSMS("hi");
+                    if(!isSendSMS && MyApplication.preferences.getBoolean("lock", false)) {
+                        sendSMS();
                         isSendSMS = true;
                     }
                 }
-
             }
         };
 
@@ -99,6 +101,14 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
         timerDecibel.schedule(timerTaskDecibel, 0, 500);
 
         smsManager = SmsManager.getDefault();
+
+        imageViewCurLocation = (ImageView) findViewById(R.id.imageView_cur_location);
+        imageViewCurLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), MapActivity.class));
+            }
+        });
     }
 
     private int getAmplitude() {
@@ -116,8 +126,33 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
         }
     }
 
-    private void sendSMS(String text) {
-        smsManager.sendTextMessage("01098898432", null, text, null, null);
+    private void sendSMS() {
+        String message = "위험한상황에 처했습니다 도와주세요\nhttps://www.google.co.kr/maps/@"+MainActivity.latitude+","+MainActivity.longitude;
+
+        String phone01 = MyApplication.preferences.getString("phone01", null);
+        String phone02 = MyApplication.preferences.getString("phone02", null);
+        String phone03 = MyApplication.preferences.getString("phone03", null);
+
+        try {
+            if(phone01 != null)
+                smsManager.sendTextMessage(phone01, null, message, null, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(phone02 != null)
+                smsManager.sendTextMessage(phone02, null, message, null, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if(phone03 != null)
+                smsManager.sendTextMessage(phone03, null, message, null, null);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -142,8 +177,8 @@ public class DetectActivity extends AppCompatActivity implements SensorEventList
 
                 shakeTime = currentTime;
 
-                if(!isSendSMS) {
-                    sendSMS("hi");
+                if(!isSendSMS && MyApplication.preferences.getBoolean("shake", false)) {
+                    sendSMS();
                     isSendSMS = true;
                 }
             }

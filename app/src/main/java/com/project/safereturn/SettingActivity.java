@@ -30,6 +30,14 @@ public class SettingActivity extends AppCompatActivity {
         editTextPhone02 = (EditText) findViewById(R.id.editText_phone02);
         editTextPhone03 = (EditText) findViewById(R.id.editText_phone03);
 
+        aSwitchShake.setChecked(MyApplication.preferences.getBoolean("shake", false));
+        aSwitchLock.setChecked(MyApplication.preferences.getBoolean("lock", false));
+        aSwitchShouting.setChecked(MyApplication.preferences.getBoolean("shouting", false));
+
+        editTextPhone01.setText(MyApplication.preferences.getString("phone01", ""));
+        editTextPhone02.setText(MyApplication.preferences.getString("phone02", ""));
+        editTextPhone03.setText(MyApplication.preferences.getString("phone03", ""));
+
         findViewById(R.id.button_save).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

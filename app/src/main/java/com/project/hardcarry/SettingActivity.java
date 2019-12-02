@@ -1,4 +1,4 @@
-package com.project.safereturn;
+package com.project.hardcarry;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import com.project.hardcarry.R;
 
 public class SettingActivity extends AppCompatActivity {
 

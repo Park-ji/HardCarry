@@ -1,4 +1,4 @@
-package com.project.safereturn;
+package com.project.hardcarry;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.project.safereturn", appContext.getPackageName());
+        assertEquals("com.project.hardcarry", appContext.getPackageName());
     }
 }

@@ -1,14 +1,10 @@
-package com.project.safereturn;
+package com.project.hardcarry;
 
 import android.app.Application;
 import android.content.SharedPreferences;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-/**
- * Created by thstj on 2017-09-25.
- */
 
 public class MyApplication extends Application {
 

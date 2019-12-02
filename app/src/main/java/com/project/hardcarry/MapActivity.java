@@ -1,4 +1,4 @@
-package com.project.safereturn;
+package com.project.hardcarry;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +9,7 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.project.hardcarry.R;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback{
 

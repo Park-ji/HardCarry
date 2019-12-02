@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.safereturn">
+    package="com.project.hardcarry">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -9,25 +9,31 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
 
     <application
-        android:name=".MyApplication"
+        android:name="com.project.hardcarry.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name="com.project.hardcarry.MainActivity">
+            </activity>
+             <activity android:name="com.project.hardcarry.IntroActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetectActivity" />
-        <activity android:name=".SettingActivity" />
-        <activity android:name=".MapActivity"></activity>
+        <activity android:name="com.project.hardcarry.DetectActivity" />
+        <activity android:name="com.project.hardcarry.SettingActivity" />
+        <activity android:name="com.project.hardcarry.MapActivity"></activity>
 
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCJZC2Zk_Kvh2zBeF_rHr4SuY-708kr804"/>
     </application>
